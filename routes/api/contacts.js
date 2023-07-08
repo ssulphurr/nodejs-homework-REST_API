@@ -52,7 +52,16 @@ router.delete("/:contactId", async (req, res, next) => {
 });
 
 router.put("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    const result = await contacts.updateContact(req.params.contactId, req.body);
+    console.log(result);
+    if (!result) {
+      throw HttpError(404, "Bad request");
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
