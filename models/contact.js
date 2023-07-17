@@ -24,8 +24,8 @@ const contactSchema = new Schema(
   { versionKey: false }
 );
 
-contactSchema.post("save", handleMongooseError);
 // handleMongooseError is not working
+contactSchema.post("save", handleMongooseError);
 
 const Contact = model("contact", contactSchema);
 
