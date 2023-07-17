@@ -16,4 +16,6 @@ router.post("/", ctrl.addContact);
 
 router.put("/:contactId", isValidId, ctrl.updateById);
 
+router.patch("/:contactId/favorite", isValidId, ctrl.updateFavorite);
+
 module.exports = router;

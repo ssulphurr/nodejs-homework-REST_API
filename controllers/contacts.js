@@ -1,4 +1,4 @@
-const { HttpError, ctrlWrapper, joiSchema } = require("../helpers");
+const { HttpError, ctrlWrapper, joiSchemas } = require("../helpers");
 const Contact = require("../models/contact");
 
 const getAll = async (req, res) => {
@@ -33,7 +33,25 @@ const deletById = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  const { error } = joiSchema.validate(req.body);
+  const { error } = joiSchemas.joiSchema.validate(req.body);
+  if (error) {
+    throw new HttpError(400, error.message);
+  }
+
+  const result = await Contact.findByIdAndUpdate(
+    req.params.contactId,
+    req.body,
+    { new: true }
+  );
+  if (!result) {
+    throw new HttpError(404);
+  }
+
+  res.json(result);
+};
+
+const updateFavorite = async (req, res) => {
+  const { error } = joiSchemas.joiSchemaFavorite.validate(req.body);
   if (error) {
     throw new HttpError(400, error.message);
   }
@@ -56,4 +74,5 @@ module.exports = {
   addContact: ctrlWrapper(addContact),
   // deletById: ctrlWrapper(deletById),
   updateById: ctrlWrapper(updateById),
+  updateFavorite: ctrlWrapper(updateFavorite),
 };

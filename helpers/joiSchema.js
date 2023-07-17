@@ -9,4 +9,8 @@ const joiSchema = Joi.object({
   favorite: Joi.boolean(),
 });
 
-module.exports = joiSchema;
+const joiSchemaFavorite = Joi.object({
+  favorite: Joi.boolean(),
+});
+
+module.exports = { joiSchema, joiSchemaFavorite };
