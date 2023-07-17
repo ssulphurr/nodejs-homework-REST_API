@@ -25,7 +25,7 @@ const addContact = async (req, res) => {
 };
 
 const deletById = async (req, res) => {
-  const result = await contacts.removeContact(req.params.contactId);
+  const result = await Contact.findByIdAndRemove(req.params.contactId);
   if (!result) {
     throw new HttpError(404);
   }
@@ -72,7 +72,7 @@ module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
   addContact: ctrlWrapper(addContact),
-  // deletById: ctrlWrapper(deletById),
+  deletById: ctrlWrapper(deletById),
   updateById: ctrlWrapper(updateById),
   updateFavorite: ctrlWrapper(updateFavorite),
 };

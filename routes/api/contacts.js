@@ -12,7 +12,7 @@ router.get("/:contactId", isValidId, ctrl.getById);
 
 router.post("/", ctrl.addContact);
 
-// router.delete("/:contactId",isValidId, ctrl.deletById);
+router.delete("/:contactId", isValidId, ctrl.deletById);
 
 router.put("/:contactId", isValidId, ctrl.updateById);
 
