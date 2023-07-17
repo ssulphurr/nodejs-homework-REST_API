@@ -1,5 +1,3 @@
-// const contacts = require("../models/contacts");
-
 const { HttpError, ctrlWrapper, joiSchema } = require("../helpers");
 const Contact = require("../models/contact");
 
@@ -9,7 +7,7 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  const result = await contacts.getContactById(req.params.contactId);
+  const result = await Contact.findOne({ _id: req.params.contactId });
   if (!result) {
     throw new HttpError(404);
   }
@@ -40,7 +38,11 @@ const updateById = async (req, res) => {
     throw new HttpError(400, error.message);
   }
 
-  const result = await contacts.updateContact(req.params.contactId, req.body);
+  const result = await Contact.findByIdAndUpdate(
+    req.params.contactId,
+    req.body,
+    { new: true }
+  );
   if (!result) {
     throw new HttpError(404);
   }
@@ -50,8 +52,8 @@ const updateById = async (req, res) => {
 
 module.exports = {
   getAll: ctrlWrapper(getAll),
-  // getById: ctrlWrapper(getById),
+  getById: ctrlWrapper(getById),
   addContact: ctrlWrapper(addContact),
   // deletById: ctrlWrapper(deletById),
-  // updateById: ctrlWrapper(updateById),
+  updateById: ctrlWrapper(updateById),
 };
