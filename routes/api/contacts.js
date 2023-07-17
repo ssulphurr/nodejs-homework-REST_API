@@ -8,7 +8,7 @@ router.get("/", ctrl.getAll);
 
 // router.get("/:contactId", ctrl.getById);
 
-// router.post("/", ctrl.addContact);
+router.post("/", ctrl.addContact);
 
 // router.delete("/:contactId", ctrl.deletById);
 

@@ -22,7 +22,7 @@ const addContact = async (req, res) => {
     throw new HttpError(400, error.message);
   }
 
-  const result = await contacts.addContact(req.body);
+  const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
 
@@ -51,7 +51,7 @@ const updateById = async (req, res) => {
 module.exports = {
   getAll: ctrlWrapper(getAll),
   // getById: ctrlWrapper(getById),
-  // addContact: ctrlWrapper(addContact),
+  addContact: ctrlWrapper(addContact),
   // deletById: ctrlWrapper(deletById),
   // updateById: ctrlWrapper(updateById),
 };
