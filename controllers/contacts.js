@@ -1,5 +1,5 @@
-const { HttpError, ctrlWrapper, joiSchemas } = require("../helpers");
-const Contact = require("../models/contact");
+const { HttpError, ctrlWrapper } = require("../helpers");
+const { Contact, schemas } = require("../models/contact");
 
 const getAll = async (req, res) => {
   const result = await Contact.find();
@@ -33,7 +33,7 @@ const deletById = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  const { error } = joiSchemas.joiSchema.validate(req.body);
+  const { error } = schemas.joiSchema.validate(req.body);
   if (error) {
     throw new HttpError(400, error.message);
   }
@@ -51,7 +51,7 @@ const updateById = async (req, res) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { error } = joiSchemas.joiSchemaFavorite.validate(req.body);
+  const { error } = schemas.joiSchemaFavorite.validate(req.body);
   if (error) {
     throw new HttpError(400, error.message);
   }
