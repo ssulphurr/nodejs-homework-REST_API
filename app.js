@@ -22,8 +22,8 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode, message } = err;
-  res.status(statusCode).json({ message });
+  const { status, message } = err;
+  res.status(status).json({ message });
 });
 
 module.exports = app;

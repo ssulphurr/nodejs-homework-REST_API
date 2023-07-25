@@ -14,11 +14,11 @@ const messages = {
 
 class HttpError extends Error {
   constructor(
-    statusCode = 500,
-    message = messages[statusCode] || this.messages.default
+    status = 500,
+    message = messages[status] || this.messages.default
   ) {
     super(message);
-    this.statusCode = statusCode;
+    this.status = status;
   }
 }
 

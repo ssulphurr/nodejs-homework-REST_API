@@ -35,7 +35,6 @@ const contactSchema = new Schema(
   { versionKey: false }
 );
 
-// handleMongooseError is not working
 contactSchema.post("save", handleMongooseError);
 
 const joiSchema = Joi.object({
