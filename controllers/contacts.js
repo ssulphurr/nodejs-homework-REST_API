@@ -15,11 +15,6 @@ const getById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-  const { error } = joiSchema.validate(req.body);
-  if (error) {
-    throw new HttpError(400, error.message);
-  }
-
   const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
@@ -33,11 +28,6 @@ const deletById = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  const { error } = schemas.joiSchema.validate(req.body);
-  if (error) {
-    throw new HttpError(400, error.message);
-  }
-
   const result = await Contact.findByIdAndUpdate(
     req.params.contactId,
     req.body,
@@ -51,11 +41,6 @@ const updateById = async (req, res) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { error } = schemas.joiSchemaFavorite.validate(req.body);
-  if (error) {
-    throw new HttpError(400, error.message);
-  }
-
   const result = await Contact.findByIdAndUpdate(
     req.params.contactId,
     req.body,
