@@ -15,9 +15,27 @@ const register = async (req, res) => {
 
   const newUser = await User.create({ ...req.body, password: hashRassword });
 
-  res.json({ email: newUser.email });
+  res.json({ email: newUser.email, subscription: newUser.subscription });
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new HttpError(401);
+  }
+
+  const passwordCompare = await bcrypt.compare(password, user.password);
+  if (!passwordCompare) {
+    throw new HttpError(401);
+  }
+
+  const token = "dhfgjfgkuergfueufuegfr";
+
+  res.json({ token });
 };
 
 module.exports = {
   register: ctrlWrapper(register),
+  login: ctrlWrapper(login),
 };
