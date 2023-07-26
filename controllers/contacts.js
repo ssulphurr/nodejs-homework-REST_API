@@ -1,8 +1,9 @@
-const { HttpError, ctrlWrapper, joiSchemas } = require("../helpers");
-const Contact = require("../models/contact");
+const { HttpError, ctrlWrapper } = require("../helpers");
+const { Contact } = require("../models/contact");
 
 const getAll = async (req, res) => {
-  const result = await Contact.find();
+  const { _id: owner } = req.user;
+  const result = await Contact.find({ owner }, "-createdAt -updatedAt");
   res.json(result);
 };
 
@@ -15,12 +16,9 @@ const getById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-  const { error } = joiSchema.validate(req.body);
-  if (error) {
-    throw new HttpError(400, error.message);
-  }
+  const { _id: owner } = req.user;
 
-  const result = await Contact.create(req.body);
+  const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 
@@ -33,11 +31,6 @@ const deletById = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  const { error } = joiSchemas.joiSchema.validate(req.body);
-  if (error) {
-    throw new HttpError(400, error.message);
-  }
-
   const result = await Contact.findByIdAndUpdate(
     req.params.contactId,
     req.body,
@@ -51,11 +44,6 @@ const updateById = async (req, res) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { error } = joiSchemas.joiSchemaFavorite.validate(req.body);
-  if (error) {
-    throw new HttpError(400, error.message);
-  }
-
   const result = await Contact.findByIdAndUpdate(
     req.params.contactId,
     req.body,
