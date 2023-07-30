@@ -83,6 +83,8 @@ const updateAvatar = async (req, res) => {
     return avatar.resize(250, 250).write(tempUpload);
   });
 
+  // resizing is not working
+
   const filename = `${_id}_${originalname}`;
 
   const resultUpload = path.join(avatarsDir, filename);
