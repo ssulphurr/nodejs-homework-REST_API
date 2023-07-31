@@ -6,7 +6,7 @@ const ctrl = require("../../controllers/contacts");
 
 const { isValidId, validateBody, authenticate } = require("../../middlewares");
 
-const { schemas } = require("../../models/contact");
+const { contactSchemas } = require("../../helpers");
 
 router.get("/", authenticate, ctrl.getAll);
 
@@ -15,7 +15,7 @@ router.get("/:contactId", authenticate, isValidId, ctrl.getById);
 router.post(
   "/",
   authenticate,
-  validateBody(schemas.joiSchema),
+  validateBody(contactSchemas.joiSchema),
   ctrl.addContact
 );
 
@@ -25,7 +25,7 @@ router.put(
   "/:contactId",
   authenticate,
   isValidId,
-  validateBody(schemas.joiSchema),
+  validateBody(contactSchemas.joiSchema),
   ctrl.updateById
 );
 
@@ -33,7 +33,7 @@ router.patch(
   "/:contactId/favorite",
   authenticate,
   isValidId,
-  validateBody(schemas.joiSchemaFavorite),
+  validateBody(contactSchemas.joiSchemaFavorite),
   ctrl.updateFavorite
 );
 
