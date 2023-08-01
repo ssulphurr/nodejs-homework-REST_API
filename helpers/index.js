@@ -1,13 +1,19 @@
 const HttpError = require("./HttpError");
 const ctrlWrapper = require("./ctrlWrapper");
 const handleMongooseError = require("./handleMongooseError");
-const contactSchemas = require("./contactSchemas");
+const {
+  createContactValidationSchema,
+  updateFavoriteValidationSchema,
+} = require("./contactSchemas");
 const userSchemas = require("./userSchemas");
+const sendEmail = require("./sendEmail");
 
 module.exports = {
   HttpError,
   ctrlWrapper,
   handleMongooseError,
-  contactSchemas,
+  createContactValidationSchema,
+  updateFavoriteValidationSchema,
   userSchemas,
+  sendEmail,
 };
