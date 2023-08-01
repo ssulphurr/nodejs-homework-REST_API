@@ -77,13 +77,10 @@ const updateAvatar = async (req, res) => {
   const { _id } = req.user;
 
   const { path: tempUpload, originalname } = req.file;
-  console.log(req.file);
 
-  Jimp.read(tempUpload).then((avatar) => {
+  await Jimp.read(tempUpload).then((avatar) => {
     return avatar.resize(250, 250).write(tempUpload);
   });
-
-  // resizing is not working
 
   const filename = `${_id}_${originalname}`;
 
