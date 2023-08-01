@@ -20,6 +20,8 @@ const addContact = async (req, res) => {
 
   const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
+
+  // to do: add validation for identical contacts
 };
 
 const deletById = async (req, res) => {
