@@ -8,7 +8,6 @@ const { nanoid } = require("nanoid");
 
 const User = require("../models/user");
 const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
-const { isNullOrUndefined } = require("util");
 
 const { SECRET_KEY, BASE_URL } = process.env;
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
@@ -53,10 +52,38 @@ const verifyEmail = async (req, res) => {
 
   await User.findByIdAndUpdate(user._id, {
     verify: true,
-    verificationToken: " ",
+    verificationToken: null,
   });
 
   res.json({ message: "Verification successful" });
+};
+
+const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    throw new HttpError(400, "Email is missing");
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new HttpError(401, "User is not found");
+  }
+
+  if (user.verify) {
+    throw new HttpError(400, "Verification has already been passed");
+  }
+
+  const verifyEmail = {
+    to: email,
+    subject: "Verify your email",
+    html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationToken}">Click this link to verify your email</a>`,
+  };
+
+  await sendEmail(verifyEmail);
+
+  res.json({
+    message: "Verification email sent",
+  });
 };
 
 const login = async (req, res) => {
@@ -130,6 +157,7 @@ const updateAvatar = async (req, res) => {
 module.exports = {
   register: ctrlWrapper(register),
   verifyEmail: ctrlWrapper(verifyEmail),
+  resendVerificationEmail: ctrlWrapper(resendVerificationEmail),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
