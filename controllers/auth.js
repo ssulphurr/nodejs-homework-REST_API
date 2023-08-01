@@ -8,6 +8,7 @@ const { nanoid } = require("nanoid");
 
 const User = require("../models/user");
 const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
+const { isNullOrUndefined } = require("util");
 
 const { SECRET_KEY, BASE_URL } = process.env;
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
@@ -42,11 +43,31 @@ const register = async (req, res) => {
   res.json({ email: newUser.email, subscription: newUser.subscription });
 };
 
+const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.params;
+  const user = await User.findOne({ verificationToken });
+
+  if (!user) {
+    throw new HttpError(401, "User is not found");
+  }
+
+  await User.findByIdAndUpdate(user._id, {
+    verify: true,
+    verificationToken: " ",
+  });
+
+  res.json({ message: "Verification successful" });
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
     throw new HttpError(401);
+  }
+
+  if (!user.verify) {
+    throw new HttpError(401, "Email is not verified");
   }
 
   const passwordCompare = await bcrypt.compare(password, user.password);
@@ -108,6 +129,7 @@ const updateAvatar = async (req, res) => {
 
 module.exports = {
   register: ctrlWrapper(register),
+  verifyEmail: ctrlWrapper(verifyEmail),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
