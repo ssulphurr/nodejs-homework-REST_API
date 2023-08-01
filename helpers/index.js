@@ -6,6 +6,7 @@ const {
   updateFavoriteValidationSchema,
 } = require("./contactSchemas");
 const userSchemas = require("./userSchemas");
+const sendEmail = require("./sendEmail");
 
 module.exports = {
   HttpError,
@@ -14,4 +15,5 @@ module.exports = {
   createContactValidationSchema,
   updateFavoriteValidationSchema,
   userSchemas,
+  sendEmail,
 };
